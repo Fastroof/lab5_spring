@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class RoomDescription {
+    private Long id;
     @NotNull
     @Size(min = 1)
     private String description;

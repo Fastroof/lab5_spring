@@ -3,24 +3,24 @@ package com.fastroof.lab5_spring.repository;
 import com.fastroof.lab5_spring.entity.RoomConfiguration;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Repository
 @Getter
 @Setter
 public class FakeRoomConfigurationRepository implements RoomConfigurationRepository{
     private final List<RoomConfiguration> roomConfigurations = new ArrayList<>();
 
-    public FakeRoomConfigurationRepository(){
-        roomConfigurations.add(new RoomConfiguration(80.0, 2, 580));
-        roomConfigurations.add(new RoomConfiguration(50.0, 1, 450));
-        roomConfigurations.add(new RoomConfiguration(60.0, 1, 450));
-        roomConfigurations.add(new RoomConfiguration(70.0, 2, 850));
-        roomConfigurations.add(new RoomConfiguration(65.0, 1, 650));
-        roomConfigurations.add(new RoomConfiguration(40.0, 1, 250));
+    public FakeRoomConfigurationRepository() {
+        roomConfigurations.add(new RoomConfiguration(1L, 80.0, 2, 580));
+        roomConfigurations.add(new RoomConfiguration(2L, 50.0, 1, 450));
+        roomConfigurations.add(new RoomConfiguration(3L, 60.0, 1, 450));
+        roomConfigurations.add(new RoomConfiguration(4L, 70.0, 2, 850));
+        roomConfigurations.add(new RoomConfiguration(5L, 65.0, 1, 650));
+        roomConfigurations.add(new RoomConfiguration(6L, 40.0, 1, 250));
     }
 
     public List<RoomConfiguration> findAllByAreaAndBedroomCountAndPrice(Double area, Integer bedroomCount, Integer price) {

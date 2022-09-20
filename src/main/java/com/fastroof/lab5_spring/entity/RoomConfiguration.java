@@ -12,6 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class RoomConfiguration {
+    private Long id;
     @NotNull
     @Min(1)
     private Double area;

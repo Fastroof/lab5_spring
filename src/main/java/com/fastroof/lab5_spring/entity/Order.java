@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class Order {
+    private Long id;
     private User user;
     private Room room;
     private Date dateStartContract;
