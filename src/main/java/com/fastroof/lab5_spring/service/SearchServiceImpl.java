@@ -13,17 +13,17 @@ import java.util.List;
 @Service
 public class SearchServiceImpl implements SearchService {
     @Autowired
-    private RoomRepository fakeRoomRepository;
+    private RoomRepository roomRepository;
     @Autowired
-    private RoomConfigurationRepository fakeRoomConfigurationRepository;
+    private RoomConfigurationRepository roomConfigurationRepository;
 
     @Override
     public List<Room> findAllByAreaAndBedroomCountAndPrice(Double area, Integer bedroomCount, Integer price) {
         List<Room> rooms = new ArrayList<>();
         for (RoomConfiguration roomConfiguration :
-                fakeRoomConfigurationRepository.findAllByAreaAndBedroomCountAndPrice(area, bedroomCount, price)
+                roomConfigurationRepository.findAllByAreaAndBedroomCountAndPrice(area, bedroomCount, price)
         ){
-            Room room = fakeRoomRepository.findByRoomConfiguration(roomConfiguration);
+            Room room = roomRepository.findByRoomConfiguration(roomConfiguration);
             rooms.add(room);
         }
         return rooms;

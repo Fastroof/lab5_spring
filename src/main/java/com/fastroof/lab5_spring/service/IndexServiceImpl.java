@@ -16,13 +16,13 @@ public class IndexServiceImpl implements IndexService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private OrderRepository fakeOrderRepository;
+    private OrderRepository orderRepository;
 
     public List<Room> getAllRooms() {
         return roomRepository.getRooms();
     }
 
     public List<Order> getAllOrders() {
-        return fakeOrderRepository.getOrders();
+        return orderRepository.getOrders();
     }
 }
