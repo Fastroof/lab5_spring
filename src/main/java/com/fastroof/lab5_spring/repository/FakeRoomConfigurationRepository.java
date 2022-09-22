@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 @Getter
 @Setter
-public class FakeRoomConfigurationRepository implements RoomConfigurationRepository{
+public class FakeRoomConfigurationRepository implements RoomConfigurationRepository {
     private final List<RoomConfiguration> roomConfigurations = new ArrayList<>();
 
     public FakeRoomConfigurationRepository() {
@@ -25,8 +25,8 @@ public class FakeRoomConfigurationRepository implements RoomConfigurationReposit
 
     public List<RoomConfiguration> findAllByAreaAndBedroomCountAndPrice(Double area, Integer bedroomCount, Integer price) {
         return roomConfigurations.stream().filter(roomConfiguration -> ((area == null) || (roomConfiguration.getArea().equals(area))) &&
-        ((bedroomCount == null) || (roomConfiguration.getBedroomCount().equals(bedroomCount))) &&
-        ((price == null) || (roomConfiguration.getPrice().equals(price)))
+                ((bedroomCount == null) || (roomConfiguration.getBedroomCount().equals(bedroomCount))) &&
+                ((price == null) || (roomConfiguration.getPrice().equals(price)))
         ).toList();
     }
 

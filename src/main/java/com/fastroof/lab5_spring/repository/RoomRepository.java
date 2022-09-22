@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface RoomRepository {
     Room findByRoomConfiguration(RoomConfiguration roomConfiguration);
+
     Room findById(Long id);
+
     List<Room> getRooms();
 }

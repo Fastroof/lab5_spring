@@ -14,17 +14,17 @@ import java.util.List;
 @Repository
 @Getter
 @Setter
-public class FakeOrderRepository implements OrderRepository{
+public class FakeOrderRepository implements OrderRepository {
     private RoomRepository fakeRoomRepository;
     private UserRepository fakeUserRepository;
 
     private final List<Order> orders = new ArrayList<>();
 
     @Autowired
-    public FakeOrderRepository(RoomRepository fakeRoomRepository, UserRepository fakeUserRepository){
+    public FakeOrderRepository(RoomRepository fakeRoomRepository, UserRepository fakeUserRepository) {
         this.fakeRoomRepository = fakeRoomRepository;
         this.fakeUserRepository = fakeUserRepository;
-        orders.add(new Order(0L, fakeUserRepository.getUsers().get(0), fakeRoomRepository.getRooms().get(0), new Date(), new Date(), 444.6) );
-        orders.add(new Order(1L, fakeUserRepository.getUsers().get(1), fakeRoomRepository.getRooms().get(1), new Date(), new Date(), 154.6) );
+        orders.add(new Order(0L, fakeUserRepository.getUsers().get(0), fakeRoomRepository.getRooms().get(0), new Date(), new Date(), 444.6));
+        orders.add(new Order(1L, fakeUserRepository.getUsers().get(1), fakeRoomRepository.getRooms().get(1), new Date(), new Date(), 154.6));
     }
 }
