@@ -35,10 +35,7 @@ public class WebSecurityConfig {
         http
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/**").permitAll().and()
+                .antMatchers(HttpMethod.GET, "/api/**").permitAll().and()
                 .csrf().disable();
         http.authorizeRequests()
                 .antMatchers( "/", "/registration", "/resources/**", "/oauth2/**").permitAll()
