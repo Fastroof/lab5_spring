@@ -1,6 +1,7 @@
 package com.fastroof.lab5_spring.restcontroller;
 
 import com.fastroof.lab5_spring.entity.Room;
+import com.fastroof.lab5_spring.pojo.RoomCreationRequest;
 import com.fastroof.lab5_spring.service.RoomService;
 import com.fastroof.lab5_spring.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -36,8 +38,8 @@ public class RoomRestController {
     }
 
     @PostMapping("/rooms")
-    Room newRoom(@Valid Room newRoom) {
-        roomService.addRoom(newRoom);
+    RoomCreationRequest newRoom(@Valid RoomCreationRequest newRoom, Principal principal) {
+        roomService.addRoom(newRoom, principal);
         return newRoom;
     }
 
@@ -51,12 +53,12 @@ public class RoomRestController {
     }
 
     @PutMapping("/rooms/{id}")
-    Room updateRoom(@Valid Room updatedRoom, @PathVariable Long id) {
+    boolean updateRoom(@Valid Room updatedRoom, @PathVariable Long id) {
         Room oldRoom = roomService.getRoom(id);
         if (oldRoom == null) {
             throw new RoomNotFoundException(id);
         }
-        return roomService.updateRoom(oldRoom, updatedRoom);
+        return roomService.updateRoom(id, updatedRoom);
     }
 
     @DeleteMapping("/rooms/{id}")

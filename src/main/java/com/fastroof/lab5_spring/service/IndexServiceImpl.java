@@ -12,11 +12,14 @@ import java.util.List;
 @Service
 public class IndexServiceImpl implements IndexService {
 
-    @Autowired
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    public IndexServiceImpl(RoomRepository roomRepository, OrderRepository orderRepository) {
+        this.roomRepository = roomRepository;
+        this.orderRepository = orderRepository;
+    }
 
     public List<Room> getAllRooms() {
         return roomRepository.getRooms();

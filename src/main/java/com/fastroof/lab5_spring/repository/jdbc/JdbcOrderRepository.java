@@ -1,6 +1,9 @@
-package com.fastroof.lab5_spring.repository;
+package com.fastroof.lab5_spring.repository.jdbc;
 
 import com.fastroof.lab5_spring.entity.Order;
+import com.fastroof.lab5_spring.repository.OrderRepository;
+import com.fastroof.lab5_spring.repository.RoomRepository;
+import com.fastroof.lab5_spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,16 +16,14 @@ import java.util.List;
 @Primary
 public class JdbcOrderRepository implements OrderRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final JdbcUserRepository userRepository;
-    private final JdbcRoomRepository roomRepository;
-
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
     @Autowired
-    public JdbcOrderRepository(JdbcUserRepository userRepository, JdbcRoomRepository roomRepository, DataSource dataSource) {
+    public JdbcOrderRepository(UserRepository userRepository, RoomRepository roomRepository, DataSource dataSource) {
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-
     }
 
     @Override
@@ -32,12 +33,11 @@ public class JdbcOrderRepository implements OrderRepository {
                 (rs, rowNum) ->
                         new Order(
                                 rs.getLong("id"),
-                                userRepository.findById(rs.getLong("user_id")),
-                                roomRepository.findById(rs.getLong("room_id")),
+                                userRepository.findById(rs.getLong("user_id")).orElse(null),
+                                roomRepository.findById(rs.getLong("room_id")).orElse(null),
                                 rs.getDate("date_start_contract"),
                                 rs.getDate("date_end_contract"),
                                 rs.getDouble("price")
-
                         )
         );
     }

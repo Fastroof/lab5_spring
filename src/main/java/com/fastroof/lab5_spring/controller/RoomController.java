@@ -1,14 +1,14 @@
 package com.fastroof.lab5_spring.controller;
 
 import com.fastroof.lab5_spring.entity.Room;
+import com.fastroof.lab5_spring.pojo.RoomCreationRequest;
 import com.fastroof.lab5_spring.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 public class RoomController {
@@ -21,34 +21,50 @@ public class RoomController {
 
     @GetMapping("/room/new")
     public String createNewRoom(Model model) {
-        Room room = new Room();
-        model.addAttribute("room", room);
+        RoomCreationRequest roomCreationRequest = new RoomCreationRequest();
+        model.addAttribute("room", roomCreationRequest);
         return "thymeleaf/room/new";
     }
 
     @PostMapping("/room/new")
-    public String submitNewRoom(@ModelAttribute Room room) {
-        roomService.addRoom(room);
-        return "redirect:../";
+    @ResponseBody
+    public Boolean submitNewRoom(@ModelAttribute RoomCreationRequest roomCreationRequest, Principal principal) {
+        return roomService.addRoom(roomCreationRequest, principal);
     }
 
     @GetMapping("/room/edit")
-    public String editRoom(Model model, @RequestParam Long id) {
+    public String editRoom(Model model, @RequestParam Long id, Principal principal) {
         Room room = roomService.getRoom(id);
+        if (room == null) {
+             return "redirect:../error";
+        } else if (!principal.getName().equals(room.getUser().getEmail())) {
+            return "redirect:../error";
+        }
         model.addAttribute("room", room);
         return "thymeleaf/room/edit";
     }
 
     @PostMapping("/room/edit")
-    public String submitEditedRoom(@ModelAttribute Room room, @RequestParam Long id) {
+    @ResponseBody
+    public Boolean submitEditedRoom(@ModelAttribute Room room, @RequestParam Long id, Principal principal) {
         Room oldRoom = roomService.getRoom(id);
-        roomService.updateRoom(oldRoom, room);
-        return "redirect:../";
+        if (oldRoom == null) {
+            return false;
+        } else if (!principal.getName().equals(oldRoom.getUser().getEmail())) {
+            return false;
+        }
+        return roomService.updateRoom(id, room);
     }
 
     @GetMapping("/room/delete")
-    public String deleteRoom(@RequestParam Long id) {
-        roomService.deleteRoom(roomService.getRoom(id));
-        return "redirect:../";
+    @ResponseBody
+    public Boolean deleteRoom(@RequestParam Long id, Principal principal) {
+        Room room = roomService.getRoom(id);
+        if (room == null) {
+            return false;
+        } else if (!principal.getName().equals(room.getUser().getEmail())) {
+            return false;
+        }
+        return roomService.deleteRoom(room);
     }
 }

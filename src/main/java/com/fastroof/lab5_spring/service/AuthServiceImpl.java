@@ -1,6 +1,7 @@
 package com.fastroof.lab5_spring.service;
 
 import com.fastroof.lab5_spring.entity.User;
+import com.fastroof.lab5_spring.enums.Provider;
 import com.fastroof.lab5_spring.pojo.UserRegistrationRequest;
 import com.fastroof.lab5_spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Map<String, Object> processRegister(UserRegistrationRequest request) {
         Map<String, Object> result = new HashMap<>();
-        if (userRepository.findByEmail(request.getEmail()) != null) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             result.put("message_number", 1);
             result.put("msg", String.format("Користувач з email %s вже зареєстрований.", request.getEmail()));
             result.put("link", "/registration");
@@ -31,14 +32,13 @@ public class AuthServiceImpl implements AuthService {
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(request.getPassword());
-            // Коли буде додана JDBC, id будуть генеруватися автоматично
             User user = new User();
             user.setEmail(request.getEmail());
             user.setPassword(encodedPassword);
             user.setFullName(request.getFullName());
+            user.setProvider(Provider.LOCAL);
+            userRepository.save(user);
 
-            // userRepository.save(user);
-            userRepository.getUsers().add(user);
             result.put("message_number", 0);
             result.put("msg", "Ви успішно зареєстровані!");
             result.put("link", "/login");

@@ -1,60 +1,75 @@
 package com.fastroof.lab5_spring.service;
 
 import com.fastroof.lab5_spring.entity.Room;
-import com.fastroof.lab5_spring.repository.RoomConfigurationRepository;
-import com.fastroof.lab5_spring.repository.RoomDescriptionRepository;
+import com.fastroof.lab5_spring.entity.RoomConfiguration;
+import com.fastroof.lab5_spring.entity.RoomDescription;
+import com.fastroof.lab5_spring.entity.User;
+import com.fastroof.lab5_spring.pojo.RoomConfigurationPojo;
+import com.fastroof.lab5_spring.pojo.RoomCreationRequest;
+import com.fastroof.lab5_spring.pojo.RoomDescriptionPojo;
 import com.fastroof.lab5_spring.repository.RoomRepository;
 import com.fastroof.lab5_spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
-    private RoomConfigurationRepository roomConfigurationRepository;
-    @Autowired
-    private RoomDescriptionRepository roomDescriptionRepository;
+    public RoomServiceImpl(UserRepository userRepository, RoomRepository roomRepository) {
+        this.userRepository = userRepository;
+        this.roomRepository = roomRepository;
+    }
 
     @Override
-    public boolean addRoom(Room room) {
-        roomDescriptionRepository.getRoomDescriptions().add(room.getDescription());
-        roomConfigurationRepository.getRoomConfigurations().add(room.getConfiguration());
-        room.setUser(userRepository.getUsers().get(0));
-        Long id = roomRepository.getRooms().get(roomRepository.getRooms().size() - 1).getId() + 1;
-        room.setId(id);
-        room.getConfiguration().setId(id);
-        room.getDescription().setId(id);
-        room.getDescription().setCreationDate(new Date());
-        return roomRepository.getRooms().add(room);
+    public boolean addRoom(RoomCreationRequest roomCreationRequest, Principal principal) {
+        Optional<User> user = userRepository.findByEmail(principal.getName());
+
+        if (user.isPresent()) {
+            Room room = new Room();
+
+            room.setUser(user.get());
+
+            RoomConfigurationPojo roomConfigurationPojo = roomCreationRequest.getConfiguration();
+            RoomConfiguration roomConfiguration = new RoomConfiguration();
+            roomConfiguration.setArea(roomConfigurationPojo.getArea());
+            roomConfiguration.setPrice(roomConfigurationPojo.getPrice());
+            roomConfiguration.setBedroomCount(roomConfigurationPojo.getBedroomCount());
+            room.setConfiguration(roomConfiguration);
+
+            RoomDescriptionPojo roomDescriptionPojo = roomCreationRequest.getDescription();
+            RoomDescription roomDescription = new RoomDescription();
+            roomDescription.setDescription(roomDescriptionPojo.getDescription());
+            roomDescription.setAddress(roomDescriptionPojo.getAddress());
+            roomDescription.setCreationDate(new Date());
+            room.setDescription(roomDescription);
+            
+            roomRepository.save(room);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public Room getRoom(Long id) {
-        return roomRepository.findById(id);
+        return roomRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Room updateRoom(Room oldRoom, Room updatedRoom) {
-        int index = roomRepository.getRooms().indexOf(oldRoom);
-        roomConfigurationRepository.getRoomConfigurations().set(index, updatedRoom.getConfiguration());
-        roomDescriptionRepository.getRoomDescriptions().set(index, updatedRoom.getDescription());
-        updatedRoom.setUser(oldRoom.getUser());
-        updatedRoom.getDescription().setCreationDate(oldRoom.getDescription().getCreationDate());
-        updatedRoom.getDescription().setId(updatedRoom.getId());
-        updatedRoom.getConfiguration().setId(updatedRoom.getId());
-        return roomRepository.getRooms().set(index, updatedRoom);
+    public boolean updateRoom(Long id, Room updatedRoom) {
+        updatedRoom.setId(id);
+        return roomRepository.update(updatedRoom);
     }
 
     @Override
-    public boolean deleteRoom(Room room){
-        roomConfigurationRepository.getRoomConfigurations().remove(room.getConfiguration());
-        roomDescriptionRepository.getRoomDescriptions().remove(room.getDescription());
-        return roomRepository.getRooms().remove(room);
+    public boolean deleteRoom(Room room) {
+        return roomRepository.delete(room);
     }
 }

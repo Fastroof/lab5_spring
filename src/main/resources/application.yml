@@ -20,3 +20,7 @@ spring:
             scope:
               - email
               - profile
+
+server:
+  error:
+    path: /error

@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
+    private final IndexService indexService;
+
     @Autowired
-    private IndexService indexService;
+    public IndexController(IndexService indexService) {
+        this.indexService = indexService;
+    }
 
     @GetMapping("/")
     public String showIndexPage(ModelMap model) {

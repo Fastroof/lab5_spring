@@ -1,12 +1,14 @@
-package com.fastroof.lab5_spring.repository;
+package com.fastroof.lab5_spring.repository.fake;
 
 import com.fastroof.lab5_spring.entity.RoomConfiguration;
+import com.fastroof.lab5_spring.repository.RoomConfigurationRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Getter
@@ -23,6 +25,7 @@ public class FakeRoomConfigurationRepository implements RoomConfigurationReposit
         roomConfigurations.add(new RoomConfiguration(5L, 40.0, 1, 250));
     }
 
+    @Override
     public List<RoomConfiguration> findAllByAreaAndBedroomCountAndPrice(Double area, Integer bedroomCount, Integer price) {
         return roomConfigurations.stream().filter(roomConfiguration -> ((area == null) || (roomConfiguration.getArea().equals(area))) &&
                 ((bedroomCount == null) || (roomConfiguration.getBedroomCount().equals(bedroomCount))) &&
@@ -30,5 +33,8 @@ public class FakeRoomConfigurationRepository implements RoomConfigurationReposit
         ).toList();
     }
 
-
+    @Override
+    public Optional<RoomConfiguration> findById(Long id) {
+        return roomConfigurations.stream().filter(user -> id.equals(user.getId())).findAny();
+    }
 }

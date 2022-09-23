@@ -1,7 +1,11 @@
-package com.fastroof.lab5_spring.repository;
+package com.fastroof.lab5_spring.repository.fake;
 
 import com.fastroof.lab5_spring.entity.Room;
 import com.fastroof.lab5_spring.entity.RoomConfiguration;
+import com.fastroof.lab5_spring.repository.RoomConfigurationRepository;
+import com.fastroof.lab5_spring.repository.RoomDescriptionRepository;
+import com.fastroof.lab5_spring.repository.RoomRepository;
+import com.fastroof.lab5_spring.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Getter
@@ -48,12 +53,34 @@ public class FakeRoomRepository implements RoomRepository {
     }
 
     @Override
-    public Room findByRoomConfiguration(RoomConfiguration roomConfiguration) {
-        return rooms.stream().filter(room -> room.getConfiguration().equals(roomConfiguration)).findAny().orElse(null);
+    public Optional<Room> findByRoomConfiguration(RoomConfiguration roomConfiguration) {
+        return rooms.stream().filter(room -> room.getConfiguration().equals(roomConfiguration)).findAny();
     }
 
     @Override
-    public Room findById(Long id) {
-        return rooms.stream().filter(room -> room.getId().equals(id)).findAny().orElse(null);
+    public Optional<Room> findById(Long id) {
+        return rooms.stream().filter(room -> room.getId().equals(id)).findAny();
+    }
+
+    @Override
+    public boolean save(Room room) {
+        rooms.add(room);
+        return true;
+    }
+
+    @Override
+    public boolean delete(Room room) {
+        rooms.remove(room);
+        return true;
+    }
+
+    @Override
+    public boolean update(Room updatedRoom) {
+        Optional<Room> roomOptional = findById(updatedRoom.getId());
+        if (roomOptional.isPresent()) {
+            rooms.remove(roomOptional.get());
+            rooms.add(updatedRoom);
+        }
+        return false;
     }
 }

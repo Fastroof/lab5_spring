@@ -1,13 +1,15 @@
-package com.fastroof.lab5_spring.repository;
+package com.fastroof.lab5_spring.repository.fake;
 
 import com.fastroof.lab5_spring.entity.User;
 import com.fastroof.lab5_spring.enums.Provider;
+import com.fastroof.lab5_spring.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Getter
@@ -21,7 +23,17 @@ public class FakeUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
-        return users.stream().filter(user -> email.equals(user.getEmail())).findAny().orElse(null);
+    public Optional<User> findByEmail(String email) {
+        return users.stream().filter(user -> email.equals(user.getEmail())).findAny();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return users.stream().filter(user -> id.equals(user.getId())).findAny();
+    }
+
+    @Override
+    public void save(User user) {
+        users.add(user);
     }
 }

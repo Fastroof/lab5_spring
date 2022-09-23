@@ -9,13 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SearchServiceImpl implements SearchService {
+
+    private final RoomRepository roomRepository;
+    private final RoomConfigurationRepository roomConfigurationRepository;
+
     @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
-    private RoomConfigurationRepository roomConfigurationRepository;
+    public SearchServiceImpl(RoomRepository roomRepository, RoomConfigurationRepository roomConfigurationRepository) {
+        this.roomRepository = roomRepository;
+        this.roomConfigurationRepository = roomConfigurationRepository;
+    }
 
     @Override
     public List<Room> findAllByAreaAndBedroomCountAndPrice(Double area, Integer bedroomCount, Integer price) {
@@ -23,8 +29,8 @@ public class SearchServiceImpl implements SearchService {
         for (RoomConfiguration roomConfiguration :
                 roomConfigurationRepository.findAllByAreaAndBedroomCountAndPrice(area, bedroomCount, price)
         ){
-            Room room = roomRepository.findByRoomConfiguration(roomConfiguration);
-            rooms.add(room);
+            Optional<Room> room = roomRepository.findByRoomConfiguration(roomConfiguration);
+            rooms.add(room.orElse(null));
         }
         return rooms;
     }

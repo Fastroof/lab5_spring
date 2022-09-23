@@ -27,15 +27,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2UserImpl oAuth2User = (OAuth2UserImpl) authentication.getPrincipal();
         String email = oAuth2User.getEmail();
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
+        if (userRepository.findByEmail(email).isEmpty()) {
             User user1 = new User();
             user1.setEmail(email);
-            user1.setFullName(oAuth2User.getName());
+            user1.setFullName(oAuth2User.getFullName());
             user1.setProvider(Provider.GOOGLE);
-            userRepository.getUsers().add(user1);
+            userRepository.save(user1);
         }
-
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

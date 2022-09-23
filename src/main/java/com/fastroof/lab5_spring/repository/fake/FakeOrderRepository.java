@@ -1,7 +1,10 @@
-package com.fastroof.lab5_spring.repository;
+package com.fastroof.lab5_spring.repository.fake;
 
 
 import com.fastroof.lab5_spring.entity.Order;
+import com.fastroof.lab5_spring.repository.OrderRepository;
+import com.fastroof.lab5_spring.repository.RoomRepository;
+import com.fastroof.lab5_spring.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import java.util.List;
 public class FakeOrderRepository implements OrderRepository {
     private RoomRepository fakeRoomRepository;
     private UserRepository fakeUserRepository;
-
     private final List<Order> orders = new ArrayList<>();
 
     @Autowired
