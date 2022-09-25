@@ -11,6 +11,7 @@ import com.fastroof.lab5_spring.repository.RoomRepository;
 import com.fastroof.lab5_spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.Date;
@@ -28,6 +29,7 @@ public class RoomServiceImpl implements RoomService {
         this.roomRepository = roomRepository;
     }
 
+    @Transactional
     @Override
     public boolean addRoom(RoomCreationRequest roomCreationRequest, Principal principal) {
         Optional<User> user = userRepository.findByEmail(principal.getName());
@@ -62,12 +64,14 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     @Override
     public boolean updateRoom(Long id, Room updatedRoom) {
         updatedRoom.setId(id);
         return roomRepository.update(updatedRoom);
     }
 
+    @Transactional
     @Override
     public boolean deleteRoom(Room room) {
         return roomRepository.delete(room);

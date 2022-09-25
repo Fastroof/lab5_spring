@@ -38,9 +38,8 @@ public class RoomRestController {
     }
 
     @PostMapping("/rooms")
-    RoomCreationRequest newRoom(@Valid RoomCreationRequest newRoom, Principal principal) {
-        roomService.addRoom(newRoom, principal);
-        return newRoom;
+    boolean newRoom(@Valid RoomCreationRequest newRoom, Principal principal) {
+        return roomService.addRoom(newRoom, principal);
     }
 
     @GetMapping("/rooms/{id}")

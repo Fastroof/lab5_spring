@@ -52,6 +52,7 @@ DELETE /api/rooms/{id}
 ![Screenshot](readme/17.png)
 ![Screenshot](readme/18.png)
 ![Screenshot](readme/19.png)
+![Screenshot](readme/21.png)
 
 Контрольні питання:
 
