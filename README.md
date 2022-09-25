@@ -17,42 +17,44 @@
 
 GET /api/orders
 
-![Screenshot](readme/1.png)
-![Screenshot](readme/2.png)
+![Screenshot](readme/GET_orders_doc.png)
+![Screenshot](readme/GET_orders_200.png)
 
 GET /api/rooms (Фільтрація по параметрах та пагінація)
 
-![Screenshot](readme/3.png)
-![Screenshot](readme/4.png)
-![Screenshot](readme/5.png)
-![Screenshot](readme/6.png)
-![Screenshot](readme/7.png)
+![Screenshot](readme/GET_rooms_doc.png)
+![Screenshot](readme/GET_rooms_200.png)
+![Screenshot](readme/GET_rooms_200_filtered.png)
+![Screenshot](readme/GET_rooms_200_filtered2.png)
+![Screenshot](readme/GET_rooms_200_paginated.png)
 
 POST /api/rooms
 
-![Screenshot](readme/8.png)
-![Screenshot](readme/9.png)
-![Screenshot](readme/10.png)
+![Screenshot](readme/POST_rooms_doc.png)
+![Screenshot](readme/POST_rooms_200.png)
+![Screenshot](readme/POST_rooms_400.png)
+![Screenshot](readme/POST_rooms_401.png)
 
 GET /api/rooms/{id}
 
-![Screenshot](readme/11.png)
-![Screenshot](readme/20.png)
-![Screenshot](readme/12.png)
+![Screenshot](readme/GET_rooms_id_doc.png)
+![Screenshot](readme/GET_rooms_id_200.png)
+![Screenshot](readme/GET_rooms_id_404.png)
 
 PUT /api/rooms/{id}
 
-![Screenshot](readme/13.png)
-![Screenshot](readme/14.png)
-![Screenshot](readme/15.png)
-![Screenshot](readme/16.png)
+![Screenshot](readme/PUT_rooms_id_doc.png)
+![Screenshot](readme/PUT_rooms_id_200.png)
+![Screenshot](readme/PUT_rooms_id_400.png)
+![Screenshot](readme/PUT_rooms_id_401.png)
+![Screenshot](readme/PUT_rooms_id_404.png)
 
 DELETE /api/rooms/{id}
 
-![Screenshot](readme/17.png)
-![Screenshot](readme/18.png)
-![Screenshot](readme/19.png)
-![Screenshot](readme/21.png)
+![Screenshot](readme/DELETE_rooms_id_doc.png)
+![Screenshot](readme/DELETE_rooms_id_200.png)
+![Screenshot](readme/DELETE_rooms_id_401.png)
+![Screenshot](readme/DELETE_rooms_id_404.png)
 
 Контрольні питання:
 
